@@ -1,0 +1,3 @@
+OBJECTS = poisson.o \
+	cf1.o \
+  RcppExports.o
