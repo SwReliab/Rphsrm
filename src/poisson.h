@@ -34,8 +34,8 @@ namespace marlib {
     static const double pi = 4.0 * atan(1.0);
     static const double LOG2PIOVER2 = log(2*pi) / 2.0;
 
-    // using traits = double_vector<T>;
-    // const int n = traits::size(prob);
+    using traits = double_vector<T>;
+    const int n = traits::size(prob);
     assert(n >= right - left + 1);
     
     int mode = static_cast<int>(lambda);

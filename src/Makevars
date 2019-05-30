@@ -1,3 +1,4 @@
+PKG_CXXFLAGS = --std=c++11
 OBJECTS = poisson.o \
 	cf1.o \
   RcppExports.o

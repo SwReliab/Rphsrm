@@ -1,4 +1,4 @@
-Package: phsrm
+Package: Rphsrm
 Type: Package
 Title: A Software Reliability Assessment Tool with Phase-Type NHPP-Based Models
 Version: 0.1.0
@@ -9,7 +9,8 @@ Description: This package provides estimation programs for software
   reliability growth models whose fault-detection time distribution is phase-type
   distribution.
 LinkingTo: Rcpp
-Imports: R6, Rcpp, Matrix
+Imports: R6, Rcpp, Matrix, Rsrat (>= 1.5.4)
 License: MIT + file LICENSE
 Encoding: UTF-8
 RoxygenNote: 6.1.1
+Remotes: okamumu/Rsrat

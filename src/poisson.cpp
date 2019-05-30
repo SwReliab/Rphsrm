@@ -34,7 +34,7 @@ namespace marlib {
     
 	double normalq(double p) {
 		const double leps = log(p);
-		assert(leps <= NORMALQ_UPPER_LOGP && leps >= NORMALQ_LOWER_LOGP);
+//		assert(leps <= NORMALQ_UPPER_LOGP && leps >= NORMALQ_LOWER_LOGP);
 		double l = NormalQ_LowerQ;
 		double u = NormalQ_UpperQ;
 		double m = (l + u) / 2;

@@ -25,7 +25,7 @@ using namespace marlib;
 //' @export
 // [[Rcpp::export]]
 
-NumericVector C_cf1cdf(NumericVector dx,
+NumericVector C_cf1pdf(NumericVector dx,
                      NumericVector alpha,
                      NumericVector rate,
                     double eps = 1.0e-8,
@@ -55,15 +55,10 @@ NumericVector C_cf1cdf(NumericVector dx,
 }
 
 //' @rdname cf1
-//' @param dx A numeric value of time differences
-//' @param alpha A vector of initial probabilities
-//' @param rate A vector of transition rates
-//' @param eps A value of tolerance error
-//' @param ufactor A value of uniformization factor
 //' @export
 // [[Rcpp::export]]
 
-NumericVector C_cf1pdf(NumericVector dx,
+NumericVector C_cf1cdf(NumericVector dx,
                      NumericVector alpha,
                      NumericVector rate,
                      double eps = 1.0e-8,
@@ -98,8 +93,6 @@ NumericVector C_cf1pdf(NumericVector dx,
 }
 
 //' @rdname cf1
-//' @param alpha A vector of initial probabilities
-//' @param rate A vector of transition rates
 //' @export
 // [[Rcpp::export]]
 
@@ -111,8 +104,6 @@ List C_cf1reform(NumericVector alpha, NumericVector rate) {
 }
 
 //' @rdname cf1
-//' @param alpha A vector of initial probabilities
-//' @param rate A vector of transition rates
 //' @export
 // [[Rcpp::export]]
 
@@ -138,24 +129,50 @@ NumericVector C_cf1sojourn(NumericVector alpha, NumericVector rate,
   return H;
 }
 
-//' @rdname cf1
-//' @param alpha A vector of initial probabilities
-//' @param rate A vector of transition rates
+//' EM step
+//'
+//' Execute one EM step for software reliability models.
+//'
+//' @param params A numeric vector for model parameters
+//' @param data A faultdata
+//' @param eps A numeric value for tolerance error.
+//' @param ufactor A numeric value indicating the uniformization factor
+//' @return A list with an updated parameter vector (param),
+//' absolute difference of parameter vector (pdiff),
+//' log-likelihood function for a given parameter vector (llf),
+//' the number of total faults (total).
 //' @export
+
 // [[Rcpp::export]]
-List C_cf1emstep(double omega, NumericVector alpha, NumericVector rate,
-                 NumericVector time, IntegerVector num, IntegerVector type,
-                 double eps = 1.0e-8, double ufactor = 1.01) {
+
+List em_cf1_emstep(List params, List data, double eps = 1.0e-8, double ufactor = 1.01) {
+  const double omega = as<double>(params["omega"]);
+  NumericVector alpha = as<NumericVector>(params["alpha"]);
+  NumericVector rate = as<NumericVector>(params["rate"]);
+  NumericVector time = as<NumericVector>(data["time"]);
+  IntegerVector num = as<IntegerVector>(data["fault"]);
+  IntegerVector type = as<IntegerVector>(data["type"]);
+  
   const int n = alpha.length();
-  double new_omega;
+  double new_omega = 0.0;
   NumericVector new_alpha(n);
   NumericVector new_rate(n);
   double llf = cf1emstep(omega, alpha, rate,
                          new_omega, new_alpha, new_rate,
                          time, num, type, eps, ufactor);
   cf1_sort(new_alpha, new_rate);
-  return List::create(Named("omega")=new_omega,
-                      Named("alpha")=new_alpha,
-                      Named("rate")=new_rate,
-                      Named("llf")=llf);
+  return List::create(
+    Named("param") = List::create(
+      Named("omega")=new_omega,
+      Named("alpha")=new_alpha,
+      Named("rate")=new_rate
+    ),
+    Named("pdiff") = List::create(
+      Named("omega")=new_omega - omega,
+      Named("alpha")=new_alpha - alpha,
+      Named("rate")=new_rate - rate
+    ),
+    Named("llf") = llf,
+    Named("total") = new_omega
+  );
 }
