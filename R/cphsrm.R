@@ -38,8 +38,8 @@
 #' \item{call}{The method call.}
 #' @examples
 #' data(dacs)
-#' fit.srm.nhpp(time=sys1[sys1>=0], te=-sys1[sys1<0], srm.names = c("exp"))
-#' fit.srm.nhpp(fault=tohma, srm.names = c("llogis"))
+#' fit.srm.cph(time=sys1[sys1>=0], te=-sys1[sys1<0], phase=10)
+#' fit.srm.cph(fault=tohma, phase=10)
 #' @export
 
 fit.srm.cph <- function(time = NULL, fault = NULL, type = NULL, te = NULL, data = data.frame(),
@@ -116,8 +116,8 @@ cphsrm <- function(phase) {
 
 .create.cph.name <- function(p) {
   if (p == 1) {
-    "expsrm"
+    "cph1 (exp)"
   } else {
-    paste("cphsrm", p, sep = "")
+    paste("cph", p, sep = "")
   }
 }

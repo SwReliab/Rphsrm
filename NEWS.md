@@ -1,3 +1,9 @@
+# Rphsrm 0.1.2
+
+* Fix a bug `Error in em_cf1_emstep(res$param, data) : std::bad_alloc`
+* Change model name
+* Add prediction example
+
 # Rphsrm 0.1.1
 
 * em with scaling

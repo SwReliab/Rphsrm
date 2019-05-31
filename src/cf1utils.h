@@ -103,6 +103,12 @@ double emstep(MatT, trans, double omega, const T1& alpha, const T2& rate,
       dcopy(vb[k-1], tmp);
       daxpy(-1.0, vb[k], tmp);
       blf[k] = ddot(alpha, tmp);
+      if (!std::isfinite(blf[k])) {
+        new_omega = omega;
+        dcopy(alpha, new_alpha);
+        dcopy(rate, new_rate);
+        return std::numeric_limits<double>::quiet_NaN();
+      }
       llf += x * std::log(omega * blf[k]) + x * lscal[k-1] - std::lgamma(x+1.0);
       en0 += x;
       daxpy(x/blf[k], tmp, eb);
@@ -113,12 +119,15 @@ double emstep(MatT, trans, double omega, const T1& alpha, const T2& rate,
     mexpv(cf1_matrix(), notrans(), P, prob, right, weight, vb2[k], vb2[k], xi);
     if (u == 1) {
       blf2[k] = ddot(alpha, vb2[k]);
+      if (!std::isfinite(blf2[k])) {
+        new_omega = omega;
+        dcopy(alpha, new_alpha);
+        dcopy(rate, new_rate);
+        return std::numeric_limits<double>::quiet_NaN();
+      }
       llf += std::log(omega * blf2[k]) + lscal[k-1];
       en0 += 1;
       daxpy(1/blf2[k], vb2[k], eb2);
-    }
-    if (!std::isfinite(blf2[k]) || !std::isfinite(blf2[k])) {
-      return std::numeric_limits<double>::quiet_NaN();
     }
     double scale = dasum(vb2[k]);
     dscal(1/scale, vb[k]);

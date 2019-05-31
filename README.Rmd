@@ -17,11 +17,6 @@ knitr::opts_chunk$set(
 Rphsrm provides the package to evalute the software reliability from the fault data collected in the testing phase. Rphsrm uses two types of data; fault-detection time data and its grouped data. The fault-detection time data is a sequence of time intervals of fault detection times (CPU time, etc). Also its grouped data is a sequence of the number of detected faults for each time interval (per a working day, per a week, etc). The reliability evaluation is based on the software reliability growth model called PHSRM which is defined by NHPP (non-homogeneous Poisson process)
 with phase-type fault-detection time distribution.
 
-- Note: There are still some bugs.
-- TODO:
-  - Remove a bug when the number of phases is 1 and 2.
-  - Remove a bug when the data is given as time data.
-
 ## Installation
 
 You can install Rsrat from github with:
@@ -36,11 +31,10 @@ devtools::install_github("okamumu/Rphsrm")
 This is an example of the estimation of software reliability growth models from a fault data (tohma). 
 
 ```{r example1}
-### require load librareis; Rsrat and Rphsrm
-library(Rsrat)
+### load Rphsrm
 library(Rphsrm)
 
-### load example data
+### load example data that is included in Rsrat
 data(dacs)
 
 ### tohma is a grouped data
@@ -82,8 +76,9 @@ The fourth example illustrates the case where the mvfs for all the models are dr
 
 ```{r example4}
 ### Esimate and return all the estimated results
-(result <- fit.srm.cph(fault=sys1g, selection=NULL))
+(result <- fit.srm.cph(fault=sys1g, phase=c(1,2,3,4,5,10,20,50,100), selection=NULL))
 
 ### Draw the graph
 mvfplot(fault=sys1g, mvf=lapply(result, function(x) x$srm))
 ```
+

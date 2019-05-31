@@ -8,8 +8,9 @@ Maintainer: Hiroyuki OKAMURA <okamu@hiroshima-u.ac.jp>
 Description: This package provides estimation programs for software
   reliability growth models whose fault-detection time distribution is phase-type
   distribution.
+Depends: Rsrat (>= 1.5.4)
 LinkingTo: Rcpp
-Imports: R6, Rcpp, Matrix, Rsrat (>= 1.5.4)
+Imports: R6, Rcpp, Matrix
 License: MIT + file LICENSE
 Encoding: UTF-8
 RoxygenNote: 6.1.1

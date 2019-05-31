@@ -52,7 +52,7 @@ CPHSRM <- R6::R6Class("CPHSRM",
       private$n <- n
       self$params <- list(omega=omega, alpha=alpha, rate=rate)
       self$df <- 2*n
-      self$name <- paste("cphsrm", n, sep = "")
+      self$name <- paste("cph", n, sep = "")
     },
     omega = function() { self$params$omega },
     alpha = function() { self$params$alpha },
