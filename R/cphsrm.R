@@ -43,7 +43,7 @@
 #' @export
 
 fit.srm.cph <- function(time = NULL, fault = NULL, type = NULL, te = NULL, data = data.frame(),
-  phase = 1:10, selection = "AIC", control = list(), ...) {
+  phase = 2:10, selection = "AIC", control = list(), ...) {
   data <- Rsrat::faultdata.nhpp(substitute(time), substitute(fault),
     substitute(type), substitute(te), data, parent.frame())
   con <- Rsrat::srm.nhpp.options()
@@ -96,12 +96,28 @@ fit.srm.cph <- function(time = NULL, fault = NULL, type = NULL, te = NULL, data 
 
 cphsrm <- function(phase) {
   if (length(phase) == 1L) {
-    CPHSRM$new(phase)
+    .create.cph(phase)
   }
   else {
-    names <- lapply(phase, function(n) paste("cphsrm", n, sep = ""))
-    result <- lapply(phase, function(n) CPHSRM$new(n))
+    names <- lapply(phase, function(n) .create.cph.name(n))
+    result <- lapply(phase, function(n) .create.cph(n))
     names(result) <- names
     result
+  }
+}
+
+.create.cph <- function(p) {
+  if (p == 1) {
+    Rsrat::ExpSRM$new()
+  } else {
+    CPHSRM$new(p)
+  }
+}
+
+.create.cph.name <- function(p) {
+  if (p == 1) {
+    "expsrm"
+  } else {
+    paste("cphsrm", p, sep = "")
   }
 }

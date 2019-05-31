@@ -20,6 +20,7 @@ void mexpv(MatT, TR, const T1& P, const T2& poi, int right, double weight,
   for (int k=1; k<=right; k++) {
     dgemv(MatT(), TR(), 1.0, P, xi, 0.0, xi);
     daxpy(poi[k], xi, y);
+//    if (fpclassify(dasum(xi)) == FP_ZERO) break;
   }
   dscal(1.0/weight, y);
 }

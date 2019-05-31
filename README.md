@@ -53,53 +53,14 @@ tohma
 (result <- fit.srm.cph(fault=tohma))
 #> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
 #> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
 #> Model name: cphsrm10
 #> [1]  481.4
-#>  [1]  5.290e-01  4.989e-09  2.796e-16  3.218e-15  3.218e-06  4.300e-01
-#>  [7]  3.634e-06  2.869e-11  4.881e-07  4.097e-02
-#>  [1]  0.09116  0.22059  0.22064  0.22069  0.22116  0.35833  0.35833
-#>  [8]  0.35833  0.35833  0.37183
-#> Maximum LLF: -285.7923 
-#> AIC: 611.5846 
+#>  [1]  5.417e-01  2.451e-09  6.283e-17  1.631e-10  4.072e-01  8.353e-06
+#>  [7]  3.749e-12  4.909e-11  2.505e-02  2.604e-02
+#>  [1]  0.09431  0.16563  0.16583  0.16616  0.42404  0.42404  0.42404
+#>  [8]  0.42404  0.45954  0.45969
+#> Maximum LLF: -283.9308 
+#> AIC: 607.8617 
 #> Convergence: TRUE
 
 ### Draw the graph 
@@ -114,12 +75,13 @@ user-specified phases
 ``` r
 ### Estimate two models and no select
 (result <- fit.srm.cph(fault=tohma, phase=c(3, 50), selection=NULL))
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
+#> Warning in emfit(srm, data, initialize = TRUE, maxiter = con$maxiter,
+#> reltol = con$reltol, : LLF becomes +-Inf, NaN or NA: cphsrm50 25
 #> $cphsrm3
 #> Model name: cphsrm3
 #> [1]  482.3
-#> [1]  0.55976  0.36146  0.07878
-#> [1]  0.08350  0.08629  0.08629
+#> [1]  0.55974  0.36157  0.07869
+#> [1]  0.08350  0.08619  0.08638
 #> Maximum LLF: -315.7946 
 #> AIC: 643.5892 
 #> Convergence: TRUE 
@@ -127,27 +89,26 @@ user-specified phases
 #> 
 #> $cphsrm50
 #> Model name: cphsrm50
-#> [1]  685.9
-#>  [1]  3.214e-01  4.247e-02  9.070e-16  7.007e-40  1.467e-63  5.811e-75
-#>  [7]  3.658e-67  3.795e-43  8.834e-16  2.676e-01  5.595e-08  3.263e-23
-#> [13]  1.290e-45  2.699e-72  7.529e-85  5.004e-78  1.610e-70  1.170e-62
-#> [19]  1.618e-54  4.350e-46  4.390e-37  2.367e-27  9.168e-18  4.906e-07
-#> [25]  5.749e-02  4.094e-08  8.173e-26  1.623e-51  6.383e-69  4.113e-61
-#> [31]  5.995e-53  1.220e-44  2.895e-36  6.880e-28  2.556e-01  2.337e-05
-#> [37]  7.634e-41  4.584e-77  7.718e-75  1.555e-69  7.579e-64  5.263e-58
-#> [43]  3.906e-52  2.323e-46  3.897e-02  7.198e-08  1.209e-29  8.032e-28
-#> [49]  1.303e-02  3.449e-03
-#>  [1]  0.001347  0.481076  0.481076  0.481076  0.481122  0.481349  0.481694
-#>  [8]  0.482315  0.483943  0.931938  0.931938  0.931938  0.931938  0.931938
-#> [15]  0.931938  0.931938  0.931938  0.931938  0.931938  0.931938  0.931938
-#> [22]  0.931938  0.931938  0.931941  0.956523  0.956523  0.956523  0.956523
-#> [29]  0.956523  0.956523  0.956523  0.956523  0.956523  0.956523  1.136959
-#> [36]  1.136959  1.136959  1.136959  1.136959  1.136959  1.136959  1.136959
-#> [43]  1.136959  1.136959  1.229719  1.229719  1.229719  1.229719  1.283495
-#> [50]  1.283495
-#> Maximum LLF: -231.76 
-#> AIC: 663.5201 
-#> Convergence: TRUE
+#> [1]  483.8
+#>  [1]  0.039156  0.019239  0.031298  0.051663  0.073167  0.083828  0.076040
+#>  [8]  0.055419  0.034226  0.019630  0.011694  0.007944  0.006394  0.005972
+#> [15]  0.006156  0.006676  0.007416  0.008411  0.009866  0.012170  0.015872
+#> [22]  0.021548  0.029377  0.038417  0.046184  0.049483  0.046463  0.038109
+#> [29]  0.027578  0.018045  0.011124  0.006850  0.004522  0.003421  0.003082
+#> [36]  0.003281  0.003920  0.004874  0.005872  0.006538  0.006623  0.006191
+#> [43]  0.005538  0.004942  0.004539  0.004333  0.004257  0.004235  0.004218
+#> [50]  0.004199
+#>  [1]  0.03515  0.11367  0.22200  0.31245  0.37953  0.42405  0.45342
+#>  [8]  0.47729  0.50297  0.53396  0.57075  0.61245  0.65788  0.70595
+#> [15]  0.75581  0.80686  0.85878  0.91159  0.96570  1.02183  1.08081
+#> [22]  1.14312  1.20800  1.27276  1.33322  1.38571  1.42927  1.46595
+#> [29]  1.49938  1.53292  1.56868  1.60751  1.64944  1.69413  1.74120
+#> [36]  1.79022  1.84076  1.89218  1.94367  1.99443  2.04405  2.09270
+#> [43]  2.14088  2.18911  2.23771  2.28673  2.33607  2.38554  2.43503
+#> [50]  2.48453
+#> Maximum LLF: -233.2836 
+#> AIC: 666.5673 
+#> Convergence: FALSE
 
 ### Draw the graph
 mvfplot(fault=tohma, mvf=lapply(result, function(m) m$srm))
@@ -179,74 +140,13 @@ sys1
 
 ### Esimate
 (result <- fit.srm.cph(time=sys1[sys1>=0], te=-sys1[sys1<0]))
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Warning in emfit(srm, data, initialize = TRUE, maxiter = con$maxiter,
-#> reltol = con$reltol, : LLF becomes +-Inf, NaN or NA: cphsrm1 1
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Warning in emfit(srm, data, initialize = TRUE, maxiter = con$maxiter,
-#> reltol = con$reltol, : LLF becomes +-Inf, NaN or NA: cphsrm2 1
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Warning in emfit(srm, data, initialize = TRUE, maxiter = con$maxiter,
-#> reltol = con$reltol, : LLF becomes +-Inf, NaN or NA: cphsrm3 1
-#> Warning in emfit(srm, data, initialize = TRUE, maxiter = con$maxiter,
-#> reltol = con$reltol, : LLF becomes +-Inf, NaN or NA: cphsrm4 1
-#> Warning in emfit(srm, data, initialize = TRUE, maxiter = con$maxiter,
-#> reltol = con$reltol, : LLF becomes +-Inf, NaN or NA: cphsrm5 1
-#> Warning in emfit(srm, data, initialize = TRUE, maxiter = con$maxiter,
-#> reltol = con$reltol, : LLF becomes +-Inf, NaN or NA: cphsrm6 1
-#> Warning in emfit(srm, data, initialize = TRUE, maxiter = con$maxiter,
-#> reltol = con$reltol, : LLF becomes +-Inf, NaN or NA: cphsrm7 1
-#> Warning in emfit(srm, data, initialize = TRUE, maxiter = con$maxiter,
-#> reltol = con$reltol, : LLF becomes +-Inf, NaN or NA: cphsrm8 1
-#> Warning in emfit(srm, data, initialize = TRUE, maxiter = con$maxiter,
-#> reltol = con$reltol, : LLF becomes +-Inf, NaN or NA: cphsrm9 1
-#> Warning in emfit(srm, data, initialize = TRUE, maxiter = con$maxiter,
-#> reltol = con$reltol, : LLF becomes +-Inf, NaN or NA: cphsrm10 1
-#> Model name: cphsrm1
-#> [1]  1
-#> [1]  1
-#> [1]  1
-#> Maximum LLF: -Inf 
-#> AIC: Inf 
-#> Convergence: FALSE
+#> Model name: cphsrm2
+#> [1]  145
+#> [1]  0.8891  0.1109
+#> [1]  0.0000294  0.0013082
+#> Maximum LLF: -968.369 
+#> AIC: 1944.738 
+#> Convergence: TRUE
 
 ### Draw the graph
 mvfplot(time=sys1[sys1>=0], te=-sys1[sys1<0], mvf=list(result$srm))
@@ -260,81 +160,31 @@ models are drawn.
 ``` r
 ### Esimate and return all the estimated results
 (result <- fit.srm.cph(fault=sys1g, selection=NULL))
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Warning in emfit(srm, data, initialize = TRUE, maxiter = con$maxiter,
-#> reltol = con$reltol, : Did not converge to MLE by max iteration.
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> Error in em_cf1_emstep(res$param, data) : std::bad_alloc
-#> $cphsrm1
-#> Model name: cphsrm1
-#> [1]  4294
-#> [1]  1
-#> [1]  0.0003347
-#> Maximum LLF: -192.5611 
-#> AIC: 389.1222 
-#> Convergence: FALSE 
-#> 
-#> 
 #> $cphsrm2
 #> Model name: cphsrm2
-#> [1]  492.8
-#> [1]  0.96078  0.03922
-#> [1]  0.01025  0.01042
-#> Maximum LLF: -180.7328 
-#> AIC: 369.4656 
+#> [1]  496.5
+#> [1]  0.96253  0.03747
+#> [1]  0.009743  0.010852
+#> Maximum LLF: -180.7335 
+#> AIC: 369.4671 
 #> Convergence: TRUE 
 #> 
 #> 
 #> $cphsrm3
 #> Model name: cphsrm3
 #> [1]  239.8
-#> [1]  9.573e-01  1.795e-06  4.269e-02
-#> [1]  0.02811  0.02811  0.03452
-#> Maximum LLF: -178.1894 
-#> AIC: 368.3788 
+#> [1]  9.574e-01  7.648e-06  4.258e-02
+#> [1]  0.02801  0.02813  0.03463
+#> Maximum LLF: -178.1893 
+#> AIC: 368.3787 
 #> Convergence: TRUE 
 #> 
 #> 
 #> $cphsrm4
 #> Model name: cphsrm4
 #> [1]  195.1
-#> [1]  0.9384832  0.0005886  0.0056087  0.0553195
-#> [1]  0.04812  0.04812  0.04820  0.04820
+#> [1]  0.9384168  0.0005967  0.0057106  0.0552758
+#> [1]  0.04810  0.04810  0.04821  0.04821
 #> Maximum LLF: -176.9362 
 #> AIC: 369.8724 
 #> Convergence: TRUE 
@@ -343,8 +193,8 @@ models are drawn.
 #> $cphsrm5
 #> Model name: cphsrm5
 #> [1]  180.7
-#> [1]  0.9007864  0.0001054  0.0002741  0.0626058  0.0362283
-#> [1]  0.06236  0.06236  0.06236  0.06504  0.06504
+#> [1]  9.008e-01  9.162e-05  3.124e-04  6.259e-02  3.623e-02
+#> [1]  0.06235  0.06235  0.06236  0.06505  0.06505
 #> Maximum LLF: -176.0024 
 #> AIC: 372.0048 
 #> Convergence: TRUE 
@@ -353,9 +203,9 @@ models are drawn.
 #> $cphsrm6
 #> Model name: cphsrm6
 #> [1]  174.4
-#> [1]  8.719e-01  9.424e-09  2.113e-13  1.018e-01  7.350e-06  2.627e-02
-#> [1]  0.06354  0.06354  0.06354  0.09615  0.09615  0.10365
-#> Maximum LLF: -174.8969 
+#> [1]  8.719e-01  2.802e-08  5.773e-13  1.018e-01  7.266e-06  2.627e-02
+#> [1]  0.06353  0.06353  0.06353  0.09615  0.09615  0.10366
+#> Maximum LLF: -174.8968 
 #> AIC: 373.7937 
 #> Convergence: TRUE 
 #> 
@@ -363,30 +213,30 @@ models are drawn.
 #> $cphsrm7
 #> Model name: cphsrm7
 #> [1]  165.9
-#> [1]  8.623e-01  2.252e-05  9.568e-10  2.058e-07  1.166e-01  1.100e-14
-#> [7]  2.102e-02
-#> [1]  0.08331  0.08331  0.08331  0.08331  0.10570  0.10570  0.12853
+#> [1]  8.623e-01  3.544e-05  7.680e-10  1.040e-07  1.167e-01  1.039e-15
+#> [7]  2.097e-02
+#> [1]  0.08329  0.08329  0.08329  0.08329  0.10561  0.10561  0.12893
 #> Maximum LLF: -173.5188 
-#> AIC: 375.0377 
+#> AIC: 375.0376 
 #> Convergence: TRUE 
 #> 
 #> 
 #> $cphsrm8
 #> Model name: cphsrm8
 #> [1]  160.1
-#> [1]  8.486e-01  6.440e-06  1.235e-11  2.353e-11  2.922e-03  1.284e-01
-#> [7]  1.196e-30  2.004e-02
-#> [1]  0.1056  0.1056  0.1056  0.1056  0.1066  0.1091  0.1091  0.1353
-#> Maximum LLF: -172.4189 
-#> AIC: 376.8378 
+#> [1]  8.486e-01  4.656e-08  8.952e-17  3.093e-16  3.167e-03  1.282e-01
+#> [7]  1.002e-49  2.002e-02
+#> [1]  0.1056  0.1056  0.1056  0.1056  0.1067  0.1091  0.1091  0.1355
+#> Maximum LLF: -172.419 
+#> AIC: 376.838 
 #> Convergence: TRUE 
 #> 
 #> 
 #> $cphsrm9
 #> Model name: cphsrm9
 #> [1]  159.3
-#> [1]   8.459e-01   1.648e-16   4.042e-38   2.155e-43   7.870e-23   1.417e-01
-#> [7]   7.908e-58  1.324e-225   1.242e-02
+#> [1]   8.459e-01   8.730e-16   6.412e-37   5.028e-42   2.288e-22   1.417e-01
+#> [7]   1.282e-57  5.011e-224   1.242e-02
 #> [1]  0.1046  0.1046  0.1046  0.1046  0.1046  0.1263  0.1263  0.1263  0.7854
 #> Maximum LLF: -170.6897 
 #> AIC: 377.3794 
@@ -396,8 +246,8 @@ models are drawn.
 #> $cphsrm10
 #> Model name: cphsrm10
 #> [1]  157
-#>  [1]   8.421e-01   1.821e-31   4.521e-51   1.115e-45   1.858e-38
-#>  [6]   1.451e-01   5.890e-05  1.928e-204  4.941e-324   1.272e-02
+#>  [1]   8.421e-01   1.968e-31   4.432e-51   1.097e-45   1.828e-38
+#>  [6]   1.451e-01   5.852e-05  3.742e-204  4.941e-324   1.272e-02
 #>  [1]  0.1044  0.1044  0.1044  0.1044  0.1044  0.1721  0.1721  0.1721
 #>  [9]  0.1721  0.9233
 #> Maximum LLF: -169.5053 
@@ -406,9 +256,6 @@ models are drawn.
 
 ### Draw the graph
 mvfplot(fault=sys1g, mvf=lapply(result, function(x) x$srm))
-#> Warning: Removed 1 rows containing missing values (geom_path).
-#> Warning: Removed 1 rows containing missing values (geom_path).
-
 #> Warning: Removed 1 rows containing missing values (geom_path).
 
 #> Warning: Removed 1 rows containing missing values (geom_path).

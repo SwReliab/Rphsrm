@@ -5,10 +5,27 @@
 
 #pragma once
 
+#include <cmath>
+#include <limits>
+
+// #include <fstream>
+
 #include "traits.h"
 #include "array.h"
 
 namespace marlib {
+
+// for debug
+// template<typename T, typename T2>
+// void printvec2(T2& cout, const char* s, const T& v) {
+//   using traits1 = double_vector<T>;
+//   const int n = traits1::size(v);
+//   cout << s << " ";
+//   for (int i=0; i<n; i++) {
+//     cout << v[i] << " ";
+//   }
+//   cout << std::endl;
+// }
 
 template<typename T1, typename T2>
 void cf1_swap(int i, int j, T1& alpha, T2& rate) {
@@ -41,20 +58,29 @@ template <typename MatT,
           typename T6, typename T7, typename T8, typename T9, typename T10,
           typename T11, typename T12, typename T13, typename T14, typename T15,
           typename T16, typename T17, typename T18, typename T19, typename T20,
-          typename T21, typename T22, typename T23>
+          typename T21, typename T22, typename T23, typename T24>
 double emstep(MatT, trans, double omega, const T1& alpha, const T2& rate,
                double& new_omega, T4& new_alpha, T5& new_rate,
                const T6& time, const T7& num, const T8& type,
                const T9& P, double qv, T10& prob, double eps,
                T11& tmp, T12& pi2,
                double& en0, T13& eb, T14& eb2, T15& ey, T16& en, T17& h0,
-               T18& blf, T19& blf2, T20& vb, T21& vb2, T22& xi, T23& vctmp) {
+               T18& blf, T19& blf2, T20& vb, T21& vb2, T22& xi, T23& vctmp, T24& lscal) {
+  
+  // for debug
+  // std::string filename = "cpplog.txt";
+  // std::ofstream writing_file;
+  // writing_file.open(filename, std::ios::app);
+
   using traits1 = double_vector<T1>;
   using traits2 = double_vector<T6>;
   const int n = traits1::size(alpha);
   const int dsize = traits2::size(time);
   int right;
   double weight;
+  
+  lscal[0] = 0.0;
+
   en0 = 0.0;
   dfill(eb, 0.0);
   dfill(eb2, 0.0);
@@ -77,7 +103,7 @@ double emstep(MatT, trans, double omega, const T1& alpha, const T2& rate,
       dcopy(vb[k-1], tmp);
       daxpy(-1.0, vb[k], tmp);
       blf[k] = ddot(alpha, tmp);
-      llf += x * std::log(omega * blf[k]) - std::lgamma(x+1.0);
+      llf += x * std::log(omega * blf[k]) + x * lscal[k-1] - std::lgamma(x+1.0);
       en0 += x;
       daxpy(x/blf[k], tmp, eb);
     } else {
@@ -87,15 +113,37 @@ double emstep(MatT, trans, double omega, const T1& alpha, const T2& rate,
     mexpv(cf1_matrix(), notrans(), P, prob, right, weight, vb2[k], vb2[k], xi);
     if (u == 1) {
       blf2[k] = ddot(alpha, vb2[k]);
-      llf += std::log(omega * blf2[k]);
+      llf += std::log(omega * blf2[k]) + lscal[k-1];
       en0 += 1;
       daxpy(1/blf2[k], vb2[k], eb2);
     }
-  }
-  double barblf = ddot(alpha, vb[dsize]);
-  llf += - omega * (1 - barblf);
-  daxpy(omega, vb[dsize], eb);
+    if (!std::isfinite(blf2[k]) || !std::isfinite(blf2[k])) {
+      return std::numeric_limits<double>::quiet_NaN();
+    }
+    double scale = dasum(vb2[k]);
+    dscal(1/scale, vb[k]);
+    dscal(1/scale, vb2[k]);
+    lscal[k] = lscal[k-1] + std::log(scale);
+    // lscal[k] = 0.0;
 
+    // for debug
+    // writing_file << "backward k=" << k << " t=" << t << " x=" << x << " u=" << u << " " << std::endl;
+    // printvec2(writing_file, "vb[k-1]: ", vb[k-1]);
+    // printvec2(writing_file, "vb[k]: ", vb[k]);
+    // printvec2(writing_file, "vb2[k-1]: ", vb2[k-1]);
+    // printvec2(writing_file, "vb2[k]: ", vb2[k]);
+    // printvec2(writing_file, "eb: ", eb);
+    // printvec2(writing_file, "eb2: ", eb2);
+    // writing_file << "blf[k]: " << blf[k] << " " << exp(lscal[k-1]) * blf[k] << std::endl;
+    // writing_file << "llf=" << llf << std::endl;
+  }
+  double barblf = ddot(alpha, vb[dsize])*exp(lscal[dsize]);
+  llf += - omega * (1 - barblf);
+  daxpy(omega * exp(lscal[dsize]), vb[dsize], eb);
+
+  // for debug
+  // writing_file << "lastllf=" << llf << std::endl;
+  
   // compute pi2
   double tmpv = 0.0;
   for (int i=0; i<n-1; i++) {
@@ -105,14 +153,17 @@ double emstep(MatT, trans, double omega, const T1& alpha, const T2& rate,
   pi2[n-1] = 1.0 / rate[n-1];
 
   // sojourn
+  // scaling => blf[k], blf2[k] are divided by exp(lscal[k-1])
+  // scaling => vb2[k] (vb[k]) are divided by exp(lscal[k])
   dfill(tmp, 0);
-  daxpy(-num[dsize-1]/blf[dsize] + omega, pi2, tmp);
+  // original step => daxpy((-num[dsize-1]/blf[dsize] + omega, pi2, tmp);
+  // tmp will be multiplied by exp(lscal[dsize-1])
+  daxpy(omega*exp(lscal[dsize-1]) - num[dsize-1]/blf[dsize], pi2, tmp);
   if (type[dsize-1] == 1) {
     daxpy(1.0/blf2[dsize], alpha, tmp);
   }
   right = rightbound(qv*time[dsize-1], eps);
   weight = pmf(qv*time[dsize-1], 0, right+1, prob);
-  // dfill(xi, 0.0);
   dfill(h0, 0.0);
   mexp_conv(cf1_matrix(), trans(), P, qv, prob, right, weight,
             tmp, vb2[dsize-1], tmp, h0, xi, vctmp);
@@ -120,7 +171,10 @@ double emstep(MatT, trans, double omega, const T1& alpha, const T2& rate,
   for (int k=dsize-1; k>=1; k--) {
     double t = time[k-1];
     double u = type[k-1];
-    daxpy(num[k]/blf[k+1] - num[k-1]/blf[k], pi2, tmp);
+    // scale of tmp will be changed; tmp will be multiplied by exp(lscal[k-1])
+    // original => daxpy(num[k]/blf[k+1] - num[k-1]/blf[k], pi2, tmp);
+    dscal(exp(lscal[k-1]-lscal[k]), tmp);
+    daxpy(num[k]/blf[k+1]*exp(lscal[k-1]-lscal[k]) - num[k-1]/blf[k], pi2, tmp);
     if (u == 1) {
       daxpy(1.0/blf2[k], alpha, tmp);
     }
@@ -130,7 +184,12 @@ double emstep(MatT, trans, double omega, const T1& alpha, const T2& rate,
     mexp_conv(cf1_matrix(), trans(), P, qv, prob, right, weight,
               tmp, vb2[k-1], tmp, h0, xi, vctmp);
     daxpy(1.0, h0, en);
+    
+    // for debug
+    // writing_file << "sojourn k=" << k << " t=" << t << " x=" << num[k-1] << " u=" << u << " " << std::endl;
+    // printvec2(writing_file, "en: ", en);
   }
+
 
   /* concrete algorithm: M-step */
   for (int i=0; i<n-1; i++) {
@@ -149,6 +208,12 @@ double emstep(MatT, trans, double omega, const T1& alpha, const T2& rate,
   new_omega = en0 + omega * barblf;
   dcopy(eb, new_alpha);
   dcopy(ey, new_rate);
+
+  // for debug
+  // writing_file << "new_omega: " << new_omega << std::endl;
+  // printvec2(writing_file, "new_alpha: ", new_alpha);
+  // printvec2(writing_file, "new_rate: ", new_rate);
+  
   return llf;
 }
 
@@ -162,7 +227,6 @@ double cf1emstep(double omega, const T1& alpha, const T2& rate,
   using traits2 = double_vector<T5>;
   const int n = traits1::size(alpha);
   const int dsize = traits2::size(time);
-  double qv;
   tmp_array1 tmp(n);
   tmp_array1 pi2(n);
   tmp_array1 P(n);
@@ -178,11 +242,12 @@ double cf1emstep(double omega, const T1& alpha, const T2& rate,
   tmp_array2 vb2(dsize+2, n);
   const double tmax = time[idamax(time)];
   dcopy(rate, P);
-  qv = unif(cf1_matrix(), P, ufactor);
+  double qv = unif(cf1_matrix(), P, ufactor);
   const int max_right = rightbound(qv*tmax, eps)+1;
   tmp_array1 prob(max_right+2);
   tmp_array1 xi(n);
   tmp_array2 vctmp(max_right+2, n);
+  tmp_array1 lscal(dsize+1);
 
   double llf = emstep(cf1_matrix(), trans(),
                       omega, alpha, rate,
@@ -191,7 +256,7 @@ double cf1emstep(double omega, const T1& alpha, const T2& rate,
                       P, qv, prob, eps,
                       tmp, pi2,
                       en0, eb, eb2, ey, en, h0,
-                      blf, blf2, vb, vb2, xi, vctmp);
+                      blf, blf2, vb, vb2, xi, vctmp, lscal);
   return llf;
 }
 

@@ -66,9 +66,11 @@ CPHSRM <- R6::R6Class("CPHSRM",
     init_params = function(data, shape.init = c(1, 4, 16, 64, 256, 1024),
                            scale.init = c(0.5, 1.0, 2.0),
                            maxiter.init = 5, verbose = FALSE) {
-      cf1.params.init(private$n, data, shape.init = shape.init,
-                      scale.init = scale.init,
-                      maxiter.init = maxiter.init, verbose = verbose)
+      self$params <- cf1.params.init(private$n, data,
+                                     shape.init = shape.init,
+                                     scale.init = scale.init,
+                                     maxiter.init = maxiter.init,
+                                     verbose = verbose)
     },
     set_params = function(params) {
       stopifnot(private$n == length(params$alpha))
