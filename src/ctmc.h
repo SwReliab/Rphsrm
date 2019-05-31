@@ -12,20 +12,6 @@
 
 namespace marlib {
 
-#ifdef DEBUG
-// for debug
-template<typename T, typename T2>
-void printvec_ctmc(T2& cout, const char* s, const T& v) {
-  using traits1 = double_vector<T>;
-  const int n = traits1::size(v);
-  cout << s << " ";
-  for (int i=0; i<n; i++) {
-    cout << v[i] << " ";
-  }
-  cout << std::endl;
-}
-#endif
-
 template<typename MatT, typename TR,
          typename T1, typename T2, typename T3, typename T4, typename T5>
 void mexpv(MatT, TR, const T1& P, const T2& poi, int right, double weight,
@@ -36,9 +22,9 @@ void mexpv(MatT, TR, const T1& P, const T2& poi, int right, double weight,
   std::ofstream writing_file;
   writing_file.open(filename, std::ios::app);
   writing_file << "------- mexpv -------" << std::endl;
-  printvec_ctmc(writing_file, "poi ", poi);
-  printvec_ctmc(writing_file, "x ", x);
-  printvec_ctmc(writing_file, "y ", y);
+  printvec2(writing_file, "poi ", poi);
+  printvec2(writing_file, "x ", x);
+  printvec2(writing_file, "y ", y);
 #endif
 
   dcopy(x, xi);
@@ -52,12 +38,14 @@ void mexpv(MatT, TR, const T1& P, const T2& poi, int right, double weight,
 #ifdef DEBUG
     // for debug
     writing_file << "k=" << k << std::endl;
-    printvec_ctmc(writing_file, "xi ", xi);
-    printvec_ctmc(writing_file, "y ", y);
+    printvec2(writing_file, "xi ", xi);
+    printvec2(writing_file, "y ", y);
 #endif
   }
   dscal(1.0/weight, y);
 #ifdef DEBUG
+  writing_file << "weight=" << weight << std::endl;
+  printvec2(writing_file, "y ", y);
   writing_file << "------- END mexpv -------" << std::endl;
 #endif
 }
