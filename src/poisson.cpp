@@ -52,7 +52,7 @@ namespace marlib {
 	}
 
 	int rightbound(double lambda, double eps) {
-	  if (fpclassify(lambda) == FP_ZERO) {
+	  if (std::fpclassify(lambda) == FP_ZERO) {
 	    return 0;
 	  }
 	  if (lambda < POISSON_LAMBDA_MIN) {

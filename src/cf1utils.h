@@ -99,7 +99,7 @@ double emstep(MatT, trans, double omega, const T1& alpha, const T2& rate,
     right = rightbound(qv*t, eps);
     weight = pmf(qv*t, 0, right, prob);
     mexpv(cf1_matrix(), notrans(), P, prob, right, weight, vb[k], vb[k], xi);
-    if (fpclassify(x) != FP_ZERO) {
+    if (std::fpclassify(x) != FP_ZERO) {
       dcopy(vb[k-1], tmp);
       daxpy(-1.0, vb[k], tmp);
       blf[k] = ddot(alpha, tmp);

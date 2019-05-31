@@ -142,7 +142,6 @@ NumericVector C_cf1sojourn(NumericVector alpha, NumericVector rate,
 //' log-likelihood function for a given parameter vector (llf),
 //' the number of total faults (total).
 //' @export
-
 // [[Rcpp::export]]
 
 List em_cf1_emstep(List params, List data, double eps = 1.0e-8, double ufactor = 1.01) {

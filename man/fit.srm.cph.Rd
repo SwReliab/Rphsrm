@@ -5,7 +5,7 @@
 \title{NHPP-based software reliability model}
 \usage{
 fit.srm.cph(time = NULL, fault = NULL, type = NULL, te = NULL,
-  data = data.frame(), phase = 1:10, selection = "AIC",
+  data = data.frame(), phase = 2:10, selection = "AIC",
   control = list(), ...)
 }
 \arguments{
@@ -60,6 +60,6 @@ less than \emph{reltol} and the absolute error is less than \emph{abstol}.}
 }
 \examples{
 data(dacs)
-fit.srm.nhpp(time=sys1[sys1>=0], te=-sys1[sys1<0], srm.names = c("exp"))
-fit.srm.nhpp(fault=tohma, srm.names = c("llogis"))
+fit.srm.cph(time=sys1[sys1>=0], te=-sys1[sys1<0], phase=10)
+fit.srm.cph(fault=tohma, phase=10)
 }
