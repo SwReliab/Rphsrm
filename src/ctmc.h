@@ -6,14 +6,41 @@
 #include "poisson.h"
 #include "traits.h"
 
+#include "debug.h"
+
 #include <Rcpp.h>
 
 namespace marlib {
+
+#ifdef DEBUG
+// for debug
+template<typename T, typename T2>
+void printvec_ctmc(T2& cout, const char* s, const T& v) {
+  using traits1 = double_vector<T>;
+  const int n = traits1::size(v);
+  cout << s << " ";
+  for (int i=0; i<n; i++) {
+    cout << v[i] << " ";
+  }
+  cout << std::endl;
+}
+#endif
 
 template<typename MatT, typename TR,
          typename T1, typename T2, typename T3, typename T4, typename T5>
 void mexpv(MatT, TR, const T1& P, const T2& poi, int right, double weight,
            const T3& x, T4& y, T5& xi) {
+#ifdef DEBUG
+  // for debug
+  std::string filename = LOG_FILE;
+  std::ofstream writing_file;
+  writing_file.open(filename, std::ios::app);
+  writing_file << "------- mexpv -------" << std::endl;
+  printvec_ctmc(writing_file, "poi ", poi);
+  printvec_ctmc(writing_file, "x ", x);
+  printvec_ctmc(writing_file, "y ", y);
+#endif
+
   dcopy(x, xi);
   dfill(y, 0.0);
   daxpy(poi[0], xi, y);
@@ -21,8 +48,18 @@ void mexpv(MatT, TR, const T1& P, const T2& poi, int right, double weight,
     dgemv(MatT(), TR(), 1.0, P, xi, 0.0, xi);
     daxpy(poi[k], xi, y);
 //    if (fpclassify(dasum(xi)) == FP_ZERO) break;
+
+#ifdef DEBUG
+    // for debug
+    writing_file << "k=" << k << std::endl;
+    printvec_ctmc(writing_file, "xi ", xi);
+    printvec_ctmc(writing_file, "y ", y);
+#endif
   }
   dscal(1.0/weight, y);
+#ifdef DEBUG
+  writing_file << "------- END mexpv -------" << std::endl;
+#endif
 }
 
 template<typename T1>

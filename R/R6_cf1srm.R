@@ -1,7 +1,6 @@
 #' Class for phase-type NHPP-based software reliability model (canonical form 1)
 #'
 #' @docType class
-#' @name CPHSRM
 #' @return Object of \code{\link{R6Class}} with methods for NHPP-based software reliability model.
 #' @format \code{\link{R6Class}} object.
 #' @field name A character string for the name of model.
@@ -33,10 +32,7 @@
 #'          \emph{ufactor} is a uniformization factor.}
 #'   \item{\code{llf(data)}}{This method returns the log-likelihood function for a given data.}
 #' }
-## #' @seealso \code{\link{NHPP}}
-NULL
 
-#' @rdname CPHSRM
 CPHSRM <- R6::R6Class("CPHSRM",
   inherit = Rsrat::NHPP,
   private = list(

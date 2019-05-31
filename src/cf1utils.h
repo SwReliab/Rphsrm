@@ -8,24 +8,12 @@
 #include <cmath>
 #include <limits>
 
-// #include <fstream>
-
 #include "traits.h"
 #include "array.h"
 
-namespace marlib {
+#include "debug.h"
 
-// for debug
-// template<typename T, typename T2>
-// void printvec2(T2& cout, const char* s, const T& v) {
-//   using traits1 = double_vector<T>;
-//   const int n = traits1::size(v);
-//   cout << s << " ";
-//   for (int i=0; i<n; i++) {
-//     cout << v[i] << " ";
-//   }
-//   cout << std::endl;
-// }
+namespace marlib {
 
 template<typename T1, typename T2>
 void cf1_swap(int i, int j, T1& alpha, T2& rate) {
@@ -67,10 +55,13 @@ double emstep(MatT, trans, double omega, const T1& alpha, const T2& rate,
                double& en0, T13& eb, T14& eb2, T15& ey, T16& en, T17& h0,
                T18& blf, T19& blf2, T20& vb, T21& vb2, T22& xi, T23& vctmp, T24& lscal) {
   
+#ifdef DEBUG
   // for debug
-  // std::string filename = "cpplog.txt";
-  // std::ofstream writing_file;
-  // writing_file.open(filename, std::ios::app);
+  std::string filename = LOG_FILE;
+  std::ofstream writing_file;
+  writing_file.open(filename, std::ios::app);
+  writing_file << "-------- emstep ---------" << std::endl;
+#endif
 
   using traits1 = double_vector<T1>;
   using traits2 = double_vector<T6>;
@@ -135,23 +126,27 @@ double emstep(MatT, trans, double omega, const T1& alpha, const T2& rate,
     lscal[k] = lscal[k-1] + std::log(scale);
     // lscal[k] = 0.0;
 
+#ifdef DEBUG
     // for debug
-    // writing_file << "backward k=" << k << " t=" << t << " x=" << x << " u=" << u << " " << std::endl;
-    // printvec2(writing_file, "vb[k-1]: ", vb[k-1]);
-    // printvec2(writing_file, "vb[k]: ", vb[k]);
-    // printvec2(writing_file, "vb2[k-1]: ", vb2[k-1]);
-    // printvec2(writing_file, "vb2[k]: ", vb2[k]);
-    // printvec2(writing_file, "eb: ", eb);
-    // printvec2(writing_file, "eb2: ", eb2);
-    // writing_file << "blf[k]: " << blf[k] << " " << exp(lscal[k-1]) * blf[k] << std::endl;
-    // writing_file << "llf=" << llf << std::endl;
+    writing_file << "backward k=" << k << " t=" << t << " x=" << x << " u=" << u << " " << std::endl;
+    printvec2(writing_file, "vb[k-1]: ", vb[k-1]);
+    printvec2(writing_file, "vb[k]: ", vb[k]);
+    printvec2(writing_file, "vb2[k-1]: ", vb2[k-1]);
+    printvec2(writing_file, "vb2[k]: ", vb2[k]);
+    printvec2(writing_file, "eb: ", eb);
+    printvec2(writing_file, "eb2: ", eb2);
+    writing_file << "blf[k]: " << blf[k] << " " << exp(lscal[k-1]) * blf[k] << std::endl;
+    writing_file << "llf=" << llf << std::endl;
+#endif
   }
   double barblf = ddot(alpha, vb[dsize])*exp(lscal[dsize]);
   llf += - omega * (1 - barblf);
   daxpy(omega * exp(lscal[dsize]), vb[dsize], eb);
 
+#ifdef DEBUG
   // for debug
-  // writing_file << "lastllf=" << llf << std::endl;
+  writing_file << "lastllf=" << llf << std::endl;
+#endif
   
   // compute pi2
   double tmpv = 0.0;
@@ -194,9 +189,11 @@ double emstep(MatT, trans, double omega, const T1& alpha, const T2& rate,
               tmp, vb2[k-1], tmp, h0, xi, vctmp);
     daxpy(1.0, h0, en);
     
+#ifdef DEBUG
     // for debug
-    // writing_file << "sojourn k=" << k << " t=" << t << " x=" << num[k-1] << " u=" << u << " " << std::endl;
-    // printvec2(writing_file, "en: ", en);
+    writing_file << "sojourn k=" << k << " t=" << t << " x=" << num[k-1] << " u=" << u << " " << std::endl;
+    printvec2(writing_file, "en: ", en);
+#endif
   }
 
 
@@ -218,11 +215,14 @@ double emstep(MatT, trans, double omega, const T1& alpha, const T2& rate,
   dcopy(eb, new_alpha);
   dcopy(ey, new_rate);
 
+#ifdef DEBUG
   // for debug
-  // writing_file << "new_omega: " << new_omega << std::endl;
-  // printvec2(writing_file, "new_alpha: ", new_alpha);
-  // printvec2(writing_file, "new_rate: ", new_rate);
-  
+  writing_file << "new_omega: " << new_omega << std::endl;
+  printvec2(writing_file, "new_alpha: ", new_alpha);
+  printvec2(writing_file, "new_rate: ", new_rate);
+  writing_file << "-------- END emstep ---------" << std::endl;
+#endif
+
   return llf;
 }
 
