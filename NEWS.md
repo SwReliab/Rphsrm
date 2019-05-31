@@ -3,6 +3,7 @@
 * Fix a bug `Error in em_cf1_emstep(res$param, data) : std::bad_alloc`
 * Change model name
 * Add prediction example
+* Fix a bug on linux
 
 # Rphsrm 0.1.1
 

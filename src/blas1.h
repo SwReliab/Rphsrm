@@ -23,7 +23,7 @@ namespace marlib {
     const int n = traits::size(x);
     double sum = 0;
     for (int i=0; i<n; i++) {
-      sum += abs(x[i]);
+      sum += std::abs(x[i]);
     }
     return sum;
   }
