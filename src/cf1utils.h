@@ -120,6 +120,11 @@ double emstep(MatT, trans, double omega, const T1& alpha, const T2& rate,
       en0 += 1;
       daxpy(1/blf2[k], vb2[k], eb2);
     }
+#ifdef DEBUG
+    writing_file << "backward k=" << k << " t=" << t << " x=" << x << " u=" << u << " " << std::endl;
+    printvec2(writing_file, "before vb[k]: ", vb[k]);
+    printvec2(writing_file, "before vb2[k]: ", vb2[k]);
+#endif
     double scale = dasum(vb2[k]);
     dscal(1/scale, vb[k]);
     dscal(1/scale, vb2[k]);
