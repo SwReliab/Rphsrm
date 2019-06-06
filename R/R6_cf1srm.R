@@ -41,7 +41,8 @@ CPHSRM <- R6::R6Class("CPHSRM",
       pcf1(t, alpha=self$alpha(), rate=self$rate(), lower.tail=lower.tail)
     },
     invFt = function(p) { qcf1(p, alpha=self$alpha(), rate=self$rate()) },
-    ft = function(t) { dcf1(t, alpha=self$alpha(), rate=self$rate()) }
+    ft = function(t) { dcf1(t, alpha=self$alpha(), rate=self$rate()) },
+    rf = function(n) { rcf1(n, alpha=self$alpha(), rate=self$rate(), scramble=FALSE) }
   ),
   public = list(
     initialize = function(n, omega = 1, alpha = rep(1/n,n), rate = rep(1,n)) {

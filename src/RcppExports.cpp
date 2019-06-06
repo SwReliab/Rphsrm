@@ -38,6 +38,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// C_cf1sample
+NumericVector C_cf1sample(int n, NumericVector alpha, NumericVector rate);
+RcppExport SEXP _Rphsrm_C_cf1sample(SEXP nSEXP, SEXP alphaSEXP, SEXP rateSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type alpha(alphaSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type rate(rateSEXP);
+    rcpp_result_gen = Rcpp::wrap(C_cf1sample(n, alpha, rate));
+    return rcpp_result_gen;
+END_RCPP
+}
 // C_cf1reform
 List C_cf1reform(NumericVector alpha, NumericVector rate);
 RcppExport SEXP _Rphsrm_C_cf1reform(SEXP alphaSEXP, SEXP rateSEXP) {
@@ -85,6 +98,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_Rphsrm_C_cf1pdf", (DL_FUNC) &_Rphsrm_C_cf1pdf, 6},
     {"_Rphsrm_C_cf1cdf", (DL_FUNC) &_Rphsrm_C_cf1cdf, 7},
+    {"_Rphsrm_C_cf1sample", (DL_FUNC) &_Rphsrm_C_cf1sample, 3},
     {"_Rphsrm_C_cf1reform", (DL_FUNC) &_Rphsrm_C_cf1reform, 2},
     {"_Rphsrm_C_cf1sojourn", (DL_FUNC) &_Rphsrm_C_cf1sojourn, 7},
     {"_Rphsrm_em_cf1_emstep", (DL_FUNC) &_Rphsrm_em_cf1_emstep, 4},

@@ -3,18 +3,22 @@
 \name{C_cf1pdf}
 \alias{C_cf1pdf}
 \alias{C_cf1cdf}
+\alias{C_cf1sample}
 \alias{C_cf1reform}
 \alias{C_cf1sojourn}
 \alias{cf1}
 \alias{dcf1}
 \alias{pcf1}
 \alias{qcf1}
+\alias{rcf1}
 \title{Phase-Type distribution (Canonical)}
 \usage{
 C_cf1pdf(dx, alpha, rate, eps = 1e-08, ufactor = 1.01, log = FALSE)
 
 C_cf1cdf(dx, alpha, rate, eps = 1e-08, ufactor = 1.01, lower = TRUE,
   log = FALSE)
+
+C_cf1sample(n, alpha, rate)
 
 C_cf1reform(alpha, rate)
 
@@ -27,6 +31,8 @@ pcf1(q, alpha = 1, rate = 1, lower.tail = TRUE, log.p = FALSE,
   eps = 1e-08, unif.factor = 1.01)
 
 qcf1(p, alpha = 1, rate = 1, lower.tail = TRUE, log.p = FALSE)
+
+rcf1(n, alpha = 1, rate = 1, scramble = TRUE)
 }
 \arguments{
 \item{dx}{A numeric value of time differences}

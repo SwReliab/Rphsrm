@@ -20,6 +20,12 @@ C_cf1cdf <- function(dx, alpha, rate, eps = 1.0e-8, ufactor = 1.01, lower = TRUE
 
 #' @rdname cf1
 #' @export
+C_cf1sample <- function(n, alpha, rate) {
+    .Call('_Rphsrm_C_cf1sample', PACKAGE = 'Rphsrm', n, alpha, rate)
+}
+
+#' @rdname cf1
+#' @export
 C_cf1reform <- function(alpha, rate) {
     .Call('_Rphsrm_C_cf1reform', PACKAGE = 'Rphsrm', alpha, rate)
 }

@@ -96,6 +96,26 @@ NumericVector C_cf1cdf(NumericVector dx,
 //' @export
 // [[Rcpp::export]]
 
+NumericVector C_cf1sample(int n,
+                          NumericVector alpha,
+                          NumericVector rate) {
+  NumericVector res(n); // res should be cleared by zero
+  int y = 0;
+  double prob = 1.0;
+  for (int l=0; l<alpha.size(); l++) {
+    y += R::rbinom(n-y, alpha[l]/prob);
+    prob -= alpha[l];  // TODO: Does it change to plus?
+    for (int i=0; i<y; i++) {
+      res[i] += -std::log(R::runif(0,1)) / rate[l]; // R::rexp may require the mean parameter.
+    }
+  }
+  return res;
+}
+
+//' @rdname cf1
+//' @export
+// [[Rcpp::export]]
+
 List C_cf1reform(NumericVector alpha, NumericVector rate) {
   NumericVector a = clone(alpha);
   NumericVector r = clone(rate);

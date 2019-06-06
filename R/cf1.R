@@ -51,6 +51,17 @@ qcf1 <- function(p, alpha = 1, rate = 1, lower.tail = TRUE, log.p = FALSE) {
   NULL
 }
 
+#' @rdname cf1
+#' @export
+rcf1 <- function(n, alpha = 1, rate = 1, scramble = TRUE) {
+  res <- C_cf1sample(n, alpha, rate)
+  if (scramble) {
+    sample(res)
+  } else {
+    res
+  }
+}
+
 #' Simple parameter estimation for PH
 #'
 #' Determine the parameters of CF1 from data.
