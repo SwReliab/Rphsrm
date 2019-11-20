@@ -1,6 +1,6 @@
 # Rphsrm 0.1.4
 
-* Change the computation of llf (use em_step function) to avoid NaN
+* Change the computation of llf
 
 # Rphsrm 0.1.3
 

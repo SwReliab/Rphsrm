@@ -217,3 +217,32 @@ cf1moment <- function(n, alpha, rate) {
   #         }
 }
 
+#' llf for CF1
+#'
+#' Compute the llf of CF1
+#'
+#' @param data An object of faultdata
+#' @param omega A parameter for the total number of faults
+#' @param alpha A numeric vector for initial probabilities.
+#' @param rate A numeric vector for transition rates.
+#' @return llf
+#' @export
+
+cf1llf <- function(data, omega, alpha, rate) {
+  te <- sum(data$time)
+  llf <- - omega * pcf1(te, alpha=alpha, rate=rate)
+  tt <- data$time[data$type == 1]
+  if (length(tt) != 0) {
+    llf <- llf + sum(log(omega * dcf1(x=cumsum(tt), alpha=alpha, rate=rate)))
+  }
+  gt <- data$time[data$type == 0]
+  tt <- 
+  barp <- -diff(pcf1(q=c(0, cumsum(gt)), alpha=alpha, rate=rate, lower.tail = FALSE))
+  i <- data$fault != 0
+  if (length(i) != 0) {
+    llf <- llf + sum(data$fault[i] * log(omega * barp)[i] - lgamma(data$fault[i]+1))
+  }
+  llf
+}
+
+  
