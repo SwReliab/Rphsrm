@@ -1,3 +1,7 @@
+# Rphsrm 0.1.4
+
+* Change the computation of llf (use em_step function) to avoid NaN
+
 # Rphsrm 0.1.3
 
 * Enhancement: Add function to generate samples

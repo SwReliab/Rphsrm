@@ -75,6 +75,11 @@ CPHSRM <- R6::R6Class("CPHSRM",
     },
     em = function(params, data, eps = 1.0e-8, ufactor = 1.01) {
       em_cf1_emstep(params, data, eps, ufactor)
+    },
+    llf = function(data) {
+      eps <- 1.0e-8
+      ufactor <- 1.01
+      em_cf1_emstep(self$params, data, eps, ufactor)$llf
     }
   )
 )
