@@ -1,5 +1,7 @@
 ---
-output: github_document
+output:
+  github_document:
+    df_print: "kable"
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -19,11 +21,18 @@ with phase-type fault-detection time distribution.
 
 ## Installation
 
-You can install Rsrat from github with:
+You can install Rphsrm from GitHub with:
 
 ```{r gh-installation, eval = FALSE}
-# install.packages("devtools")
-devtools::install_github("okamumu/Rphsrm")
+install.packages("devtools")
+devtools::install_github("SwReliab/Rphsrm")
+```
+
+Alternatively, you can install Rphsrm with remote:
+
+```{r gh-installation2, eval = FALSE}
+install.packages("remotes")
+remotes::install_github("SwReliab/Rphsrm")
 ```
 
 ## Example
@@ -44,7 +53,7 @@ tohma
 (result <- fit.srm.cph(fault=tohma))
 
 ### Draw the graph 
-mvfplot(fault=tohma, mvf=list(result$srm))
+mvfplot(fault=tohma, srms=result)
 ```
 
 The second example illustrates the estimation for the model with user-specified phases
@@ -54,7 +63,10 @@ The second example illustrates the estimation for the model with user-specified 
 (result <- fit.srm.cph(fault=tohma, phase=c(3, 50), selection=NULL))
 
 ### Draw the graph
-mvfplot(fault=tohma, mvf=lapply(result, function(m) m$srm))
+mvfplot(fault=tohma, srms=result)
+
+### Draw the graph (dmvf)
+dmvfplot(fault=tohma, srms=result)
 ```
 
 The third example shows the case where the fault data are fault detection data.
@@ -69,7 +81,7 @@ sys1
 (result <- fit.srm.cph(time=sys1[sys1>=0], te=-sys1[sys1<0]))
 
 ### Draw the graph
-mvfplot(time=sys1[sys1>=0], te=-sys1[sys1<0], mvf=list(result$srm))
+mvfplot(time=sys1[sys1>=0], te=-sys1[sys1<0], srms=result)
 ```
 
 The fourth example illustrates the case where the mvfs for all the models are drawn.
@@ -79,6 +91,102 @@ The fourth example illustrates the case where the mvfs for all the models are dr
 (result <- fit.srm.cph(fault=sys1g, phase=c(1,2,3,4,5,10,20,50,100), selection=NULL))
 
 ### Draw the graph
-mvfplot(fault=sys1g, mvf=lapply(result, function(x) x$srm))
+mvfplot(fault=sys1g, srms=result)
 ```
 
+## Prediction Example
+
+### Data
+
+Consider the following gruped data consisting of the number of detected bugs per day in 18 working days.
+
+```{r example5}
+### Observed data
+fault <- c(0, 1, 0, 5, 0, 0, 2, 1, 1, 0, 6, 4, 0, 0, 0, 6, 3, 3)
+```
+
+### Prediction
+
+Estimate and determine an SRM from 11 ordinary models using Rsrat.
+
+```{r example6}
+## all results
+result0 <- fit.srm.nhpp(fault=fault, selection=NULL)
+result0
+
+## the model with minimum AIC
+minaic0 <- result0[[which.min(sapply(result0, function(m) m$aic))]]
+minaic0
+```
+
+The prediction for the number of bugs after 18 working days is given as folows.
+
+```{r example7}
+sapply(result0, function(m) mvf(19:33, m)) # The cumulative number of bugs up to 33 days
+sapply(result0, function(m) dmvf(18:33, m)[-1]) # The number of bugs per day after 18 days
+```
+
+Next we try to use CPHSRM for the prediction. Estimate CPHSRM with 50 phases.
+
+```{r example8}
+## all results
+result1 <- fit.srm.cph(fault=fault, phase=seq.int(5,100,5), selection=NULL)
+result1
+
+## the model with minimum AIC
+minaic1 <- result1[[which.min(sapply(result1, function(m) m$aic))]]
+minaic1
+```
+
+The prediction for the number of bugs after 18 working days is given as folows.
+
+```{r example9}
+sapply(result1, function(m) mvf(19:33, m)) # The cumulative number of bugs up to 33 days
+sapply(result1, function(m) dmvf(18:33, m)[-1]) # The number of bugs per day after 18 days
+```
+
+### Verification
+
+Now we have the real data after 19 days.
+
+```{r example10}
+fault19 <- c(4, 2, 6, 2, 0, 6, 1, 2, 0, 1, 1, 1, 0, 0, 0)
+```
+
+Compute the predictive errors
+
+```{r example12}
+observed <- cumsum(fault)
+future <- sum(fault) + cumsum(fault19)
+
+create.table <- function(result) {
+  lse <- function(m) {
+    sum((mvf(1:18, m) - observed)^2)/length(observed)
+  }
+  
+  pse <- function(m) {
+    sum((mvf(19:33, m) - future)^2)/length(future)
+  }
+  
+  psed <- function(m) {
+    sum((dmvf(18:33, m)[-1] - fault19)^2)/length(fault19)
+  }
+  data.frame(
+    NAME=sapply(result, function(m) m$srm$name),
+    LSE=sapply(result, lse),
+    AIC=sapply(result, function(m) m$aic),
+    PSE=sapply(result, pse),
+    PSEd=sapply(result, psed)
+  )
+}
+
+create.table(result0)
+create.table(result1)
+```
+
+Draw the graph for the cumulative number of bugs with the minimum pse models.
+
+```{r example11}
+mvfplot(fault=c(fault, fault19), srms=list(result0$lxvmax, result1$cph70))
+dmvfplot(fault=c(fault, fault19), srms=list(result0$lxvmax, result1$cph70))
+```

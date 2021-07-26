@@ -1,14 +1,14 @@
 Package: Rphsrm
 Type: Package
 Title: A Software Reliability Assessment Tool with Phase-Type NHPP-Based Models
-Version: 0.1.5
+Version: 0.1.6
 Date: 2020-4-6
 Author: Hiroyuki OKAMURA
 Maintainer: Hiroyuki OKAMURA <okamu@hiroshima-u.ac.jp>
 Description: This package provides estimation programs for software
-  reliability growth models whose fault-detection time distribution is phase-type
-  distribution.
-Depends: Rsrat (>= 1.5.6)
+  reliability growth models whose fault-detection time distribution is
+  phase-type distribution.
+Depends: Rsrat (>= 1.6.0)
 LinkingTo: Rcpp
 Imports: R6, Rcpp, Matrix
 License: MIT + file LICENSE
