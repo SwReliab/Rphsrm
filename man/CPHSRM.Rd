@@ -15,62 +15,8 @@ Class for phase-type NHPP-based software reliability model (canonical form 1)
 
 Class for phase-type NHPP-based software reliability model (canonical form 1)
 }
-\section{Methods}{
-
-\describe{
-  \item{\code{print()}}{This method prints model parameters.}
-  \item{\code{omega()}}{This method returns the number of total faults.}
-  \item{\code{mvf(t)}}{This method returns the mean value function at time t.}
-  \item{\code{dmvf(t)}}{This method returns the mean value function on discrete time domain.}
-  \item{\code{inv_mvf(x)}}{This method returns the time at which the mean value function attains x.}
-  \item{\code{intensity(t)}}{This method returns the intensity function at time t.}
-  \item{\code{reliab(t, s)}}{This method returns the software reliability at time t from the orign s.}
-  \item{\code{residual(t)}}{This method returns the expected residual number of faults at time t.}
-  \item{\code{ffp(t)}}{This method returns the fault-free probability at time t.}
-  \item{\code{imtbf(t)}}{This method returns the instantaneous MTBF at time t.}
-  \item{\code{cmtbf(t)}}{This method returns the cumulative MTBF at time t.}
-  \item{\code{median(s, p = 0.5)}}{This method returns the time at which the software reliability attains the proability p from the orign s.}
-  \item{\code{get_params(params)}}{This method returns a flatten parameter vector.}
-  \item{\code{init_params(data)}}{This method changes the model parameters based on a given data. This is used to set the initial value for the fitting algorithm.}
-  \item{\code{set_params(params)}}{This method sets the model parameters.}
-  \item{\code{em(params, data)}}{This method returns a list with an updated parameter vector (param),
-         absolute difference of parameter vector (pdiff),
-         log-likelihood function for a given parameter vector (llf),
-         the number of total faults (total) via EM algorithm for a given data.
-         \emph{eps} is the tolerance error for uniformization.
-         \emph{ufactor} is a uniformization factor.}
-  \item{\code{llf(data)}}{This method returns the log-likelihood function for a given data.}
-}
-}
-
 \section{Super class}{
 \code{\link[Rsrat:NHPP]{Rsrat::NHPP}} -> \code{CPHSRM}
-}
-\section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{name}}{A character string for the name of model.}
-
-\item{\code{params}}{A list of the model parameters.}
-
-\item{\code{df}}{An integer for the degrees of freedom of the model.}
-
-\item{\code{data}}{Data to esimate parameters.}
-}
-\if{html}{\out{</div>}}
-}
-\section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{name}}{A character string for the name of model.}
-
-\item{\code{params}}{A list of the model parameters.}
-
-\item{\code{df}}{An integer for the degrees of freedom of the model.}
-
-\item{\code{data}}{Data to esimate parameters.}
-}
-\if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -83,6 +29,7 @@ Class for phase-type NHPP-based software reliability model (canonical form 1)
 \item \href{#method-get_params}{\code{CPHSRM$get_params()}}
 \item \href{#method-init_params}{\code{CPHSRM$init_params()}}
 \item \href{#method-set_params}{\code{CPHSRM$set_params()}}
+\item \href{#method-set_omega}{\code{CPHSRM$set_omega()}}
 \item \href{#method-em}{\code{CPHSRM$em()}}
 \item \href{#method-llf}{\code{CPHSRM$llf()}}
 \item \href{#method-clone}{\code{CPHSRM$clone()}}
@@ -111,60 +58,107 @@ Class for phase-type NHPP-based software reliability model (canonical form 1)
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
+The number of total faults.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{CPHSRM$new(n, omega = 1, alpha = rep(1/n, n), rate = rep(1, n))}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{n}}{An integer for the number of phases.}
+
+\item{\code{omega}}{A value for the number of total faults.}
+
+\item{\code{alpha}}{A vector of the initial probabilities.}
+
+\item{\code{rate}}{A vector of transition rates.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-omega"></a>}}
 \if{latex}{\out{\hypertarget{method-omega}{}}}
 \subsection{Method \code{omega()}}{
+The number of total faults.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{CPHSRM$omega()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+The number of total faults.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-alpha"></a>}}
 \if{latex}{\out{\hypertarget{method-alpha}{}}}
 \subsection{Method \code{alpha()}}{
+The initial probability vector.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{CPHSRM$alpha()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+The initial probability vector.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-rate"></a>}}
 \if{latex}{\out{\hypertarget{method-rate}{}}}
 \subsection{Method \code{rate()}}{
+The rate vector.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{CPHSRM$rate()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+The rate vector.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-print"></a>}}
 \if{latex}{\out{\hypertarget{method-print}{}}}
 \subsection{Method \code{print()}}{
+Print model parameters.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{CPHSRM$print(digits = max(3, getOption("digits") - 3), ...)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{digits}}{An integer to determine the number of digits for print.}
+
+\item{\code{...}}{Others}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_params"></a>}}
 \if{latex}{\out{\hypertarget{method-get_params}{}}}
 \subsection{Method \code{get_params()}}{
+Make a flatten parameter vector.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{CPHSRM$get_params(params)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{params}}{A vector of parameters.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-init_params"></a>}}
 \if{latex}{\out{\hypertarget{method-init_params}{}}}
 \subsection{Method \code{init_params()}}{
+Set initial parameters from a given data.
+This is used to set the initial value for
+the fitting algorithm.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{CPHSRM$init_params(
   data,
@@ -175,33 +169,107 @@ Class for phase-type NHPP-based software reliability model (canonical form 1)
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{data}}{Data.}
+
+\item{\code{shape.init}}{A list of shapes.}
+
+\item{\code{scale.init}}{A list of scale fraction.}
+
+\item{\code{maxiter.init}}{An integer for the number of iterations.}
+
+\item{\code{verbose}}{A Boolean whether the detailed information.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_params"></a>}}
 \if{latex}{\out{\hypertarget{method-set_params}{}}}
 \subsection{Method \code{set_params()}}{
+Set model parameters.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{CPHSRM$set_params(params)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{params}}{Parameters.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_omega"></a>}}
+\if{latex}{\out{\hypertarget{method-set_omega}{}}}
+\subsection{Method \code{set_omega()}}{
+Set omega parameter.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{CPHSRM$set_omega(x)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{x}}{A value of omega.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-em"></a>}}
 \if{latex}{\out{\hypertarget{method-em}{}}}
 \subsection{Method \code{em()}}{
+Execute an EM step.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{CPHSRM$em(params, data, eps = 1e-08, ufactor = 1.01)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{params}}{Parameters.}
+
+\item{\code{data}}{Data.}
+
+\item{\code{eps}}{A value for tolerance error.}
+
+\item{\code{ufactor}}{A value for a factor to make uniformed kernel.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+A list with the following
+\describe{
+\item{param}{Updated parameters.}
+\item{pdiff}{Absolute difference of parameter vector.}
+\item{llf}{Log-likelihood function for a given parameter vector.}
+\item{total}{The number of total faults.}
+}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-llf"></a>}}
 \if{latex}{\out{\hypertarget{method-llf}{}}}
 \subsection{Method \code{llf()}}{
+The log-likelihood function for a given data.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{CPHSRM$llf(data)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{data}}{Data.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Log-likelihood function.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

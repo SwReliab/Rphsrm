@@ -1,6 +1,7 @@
 # Rphsrm 0.1.7
 
 * Add get_params to get a flatten parameter vector
+* Add set_omega to set an omega value
 
 # Rphsrm 0.1.6
 

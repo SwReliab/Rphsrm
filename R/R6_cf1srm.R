@@ -3,37 +3,6 @@
 #' @docType class
 #' @return Object of \code{\link{R6Class}} with methods for NHPP-based software reliability model.
 #' @format \code{\link{R6Class}} object.
-#' @field name A character string for the name of model.
-#' @field params A list of the model parameters.
-#' @field df An integer for the degrees of freedom of the model.
-#' @field data Data to esimate parameters.
-#'
-#' @section Methods:
-#' \describe{
-#'   \item{\code{print()}}{This method prints model parameters.}
-#'   \item{\code{omega()}}{This method returns the number of total faults.}
-#'   \item{\code{mvf(t)}}{This method returns the mean value function at time t.}
-#'   \item{\code{dmvf(t)}}{This method returns the mean value function on discrete time domain.}
-#'   \item{\code{inv_mvf(x)}}{This method returns the time at which the mean value function attains x.}
-#'   \item{\code{intensity(t)}}{This method returns the intensity function at time t.}
-#'   \item{\code{reliab(t, s)}}{This method returns the software reliability at time t from the orign s.}
-#'   \item{\code{residual(t)}}{This method returns the expected residual number of faults at time t.}
-#'   \item{\code{ffp(t)}}{This method returns the fault-free probability at time t.}
-#'   \item{\code{imtbf(t)}}{This method returns the instantaneous MTBF at time t.}
-#'   \item{\code{cmtbf(t)}}{This method returns the cumulative MTBF at time t.}
-#'   \item{\code{median(s, p = 0.5)}}{This method returns the time at which the software reliability attains the proability p from the orign s.}
-#'   \item{\code{get_params(params)}}{This method returns a flatten parameter vector.}
-#'   \item{\code{init_params(data)}}{This method changes the model parameters based on a given data. This is used to set the initial value for the fitting algorithm.}
-#'   \item{\code{set_params(params)}}{This method sets the model parameters.}
-#'   \item{\code{em(params, data)}}{This method returns a list with an updated parameter vector (param),
-#'          absolute difference of parameter vector (pdiff),
-#'          log-likelihood function for a given parameter vector (llf),
-#'          the number of total faults (total) via EM algorithm for a given data.
-#'          \emph{eps} is the tolerance error for uniformization.
-#'          \emph{ufactor} is a uniformization factor.}
-#'   \item{\code{llf(data)}}{This method returns the log-likelihood function for a given data.}
-#' }
-
 CPHSRM <- R6::R6Class("CPHSRM",
   inherit = Rsrat::NHPP,
   private = list(
@@ -46,24 +15,55 @@ CPHSRM <- R6::R6Class("CPHSRM",
     rf = function(n) { rcf1(n, alpha=self$alpha(), rate=self$rate(), scramble=FALSE) }
   ),
   public = list(
+    #' @description
+    #' The number of total faults.
+    #' @param n An integer for the number of phases.
+    #' @param omega A value for the number of total faults.
+    #' @param alpha A vector of the initial probabilities.
+    #' @param rate A vector of transition rates.
     initialize = function(n, omega = 1, alpha = rep(1/n,n), rate = rep(1,n)) {
       private$n <- n
       self$params <- list(omega=omega, alpha=alpha, rate=rate)
       self$df <- 2*n
       self$name <- paste("cph", n, sep = "")
     },
+    #' @description
+    #' The number of total faults.
+    #' @return The number of total faults.
     omega = function() { self$params$omega },
+    #' @description
+    #' The initial probability vector.
+    #' @return The initial probability vector.
     alpha = function() { self$params$alpha },
+    #' @description
+    #' The rate vector.
+    #' @return The rate vector.
     rate = function() { self$params$rate },
+    #' @description
+    #' Print model parameters.
+    #' @param digits An integer to determine the number of digits for print.
+    #' @param ... Others
     print = function(digits = max(3, getOption("digits") - 3), ...) {
       cat(gettextf("Model name: %s\n", self$name))
       print.default(format(self$omega(), digits = digits), print.gap = 2, quote = FALSE)
       print.default(format(self$alpha(), digits = digits), print.gap = 2, quote = FALSE)
       print.default(format(self$rate(), digits = digits), print.gap = 2, quote = FALSE)
     },
+    #' @description
+    #' Make a flatten parameter vector.
+    #' @param params A vector of parameters.
     get_params = function(params) {
       c(params$omega, params$alpha, params$rate)
     },
+    #' @description 
+    #' Set initial parameters from a given data.
+    #' This is used to set the initial value for
+    #' the fitting algorithm.
+    #' @param data Data.
+    #' @param shape.init A list of shapes.
+    #' @param scale.init A list of scale fraction.
+    #' @param maxiter.init An integer for the number of iterations.
+    #' @param verbose A Boolean whether the detailed information.
     init_params = function(data, shape.init = c(1, 4, 16, 64, 256, 1024),
                            scale.init = c(0.5, 1.0, 2.0),
                            maxiter.init = 5, verbose = FALSE) {
@@ -73,13 +73,40 @@ CPHSRM <- R6::R6Class("CPHSRM",
                                      maxiter.init = maxiter.init,
                                      verbose = verbose)
     },
+    #' @description 
+    #' Set model parameters.
+    #' @param params Parameters.
     set_params = function(params) {
       stopifnot(private$n == length(params$alpha))
       self$params <- params
     },
+    #' @description 
+    #' Set omega parameter.
+    #' @param x A value of omega.
+    set_omega = function(x) {
+      self$params$omega <- x
+    },
+    #' @description 
+    #' Execute an EM step.
+    #' @param params Parameters.
+    #' @param data Data.
+    #' @param eps A value for tolerance error.
+    #' @param ufactor A value for a factor to make uniformed kernel.
+    #' @return
+    #' A list with the following
+    #' \describe{
+    #' \item{param}{Updated parameters.}
+    #' \item{pdiff}{Absolute difference of parameter vector.}
+    #' \item{llf}{Log-likelihood function for a given parameter vector.}
+    #' \item{total}{The number of total faults.}
+    #' }
     em = function(params, data, eps = 1.0e-8, ufactor = 1.01) {
       em_cf1_emstep(params, data, eps, ufactor)
     },
+    #' @description 
+    #' The log-likelihood function for a given data.
+    #' @param data Data.
+    #' @return Log-likelihood function.
     llf = function(data) {
       cf1llf(data, self$omega(), self$alpha(), self$rate())
     }
