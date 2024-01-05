@@ -15,13 +15,6 @@ cf1.params.linear(n, scale, shape)
 
 \item{shape}{A numeric vector of shape. This is a parameter to indicate the
 difference between the maximum/minimum rates.}
-
-\item{n}{An integer for the number of phases}
-
-\item{scale}{A numeric vector of scale. This corresponds to the mean of CF1.}
-
-\item{shape}{A numeric vector of shape. This is a parameter to indicate the
-difference between the maximum/minimum rates.}
 }
 \value{
 List of CF1 parameters.

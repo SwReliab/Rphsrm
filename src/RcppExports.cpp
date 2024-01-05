@@ -5,6 +5,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // C_cf1pdf
 NumericVector C_cf1pdf(NumericVector dx, NumericVector alpha, NumericVector rate, double eps, double ufactor, bool log);
 RcppExport SEXP _Rphsrm_C_cf1pdf(SEXP dxSEXP, SEXP alphaSEXP, SEXP rateSEXP, SEXP epsSEXP, SEXP ufactorSEXP, SEXP logSEXP) {

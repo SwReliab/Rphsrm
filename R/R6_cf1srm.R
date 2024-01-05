@@ -22,6 +22,7 @@
 #'   \item{\code{imtbf(t)}}{This method returns the instantaneous MTBF at time t.}
 #'   \item{\code{cmtbf(t)}}{This method returns the cumulative MTBF at time t.}
 #'   \item{\code{median(s, p = 0.5)}}{This method returns the time at which the software reliability attains the proability p from the orign s.}
+#'   \item{\code{get_params(params)}}{This method returns a flatten parameter vector.}
 #'   \item{\code{init_params(data)}}{This method changes the model parameters based on a given data. This is used to set the initial value for the fitting algorithm.}
 #'   \item{\code{set_params(params)}}{This method sets the model parameters.}
 #'   \item{\code{em(params, data)}}{This method returns a list with an updated parameter vector (param),
@@ -59,6 +60,9 @@ CPHSRM <- R6::R6Class("CPHSRM",
       print.default(format(self$omega(), digits = digits), print.gap = 2, quote = FALSE)
       print.default(format(self$alpha(), digits = digits), print.gap = 2, quote = FALSE)
       print.default(format(self$rate(), digits = digits), print.gap = 2, quote = FALSE)
+    },
+    get_params = function(params) {
+      c(params$omega, params$alpha, params$rate)
     },
     init_params = function(data, shape.init = c(1, 4, 16, 64, 256, 1024),
                            scale.init = c(0.5, 1.0, 2.0),

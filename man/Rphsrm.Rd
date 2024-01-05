@@ -3,7 +3,6 @@
 \docType{package}
 \name{Rphsrm}
 \alias{Rphsrm}
-\alias{Rphsrm-package}
 \title{Rphsrm: A Software Reliability Assessment Tool with PH distribution}
 \description{
 This package provides estimation programs for software reliability growth

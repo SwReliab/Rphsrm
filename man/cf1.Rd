@@ -15,8 +15,15 @@
 \usage{
 C_cf1pdf(dx, alpha, rate, eps = 1e-08, ufactor = 1.01, log = FALSE)
 
-C_cf1cdf(dx, alpha, rate, eps = 1e-08, ufactor = 1.01, lower = TRUE,
-  log = FALSE)
+C_cf1cdf(
+  dx,
+  alpha,
+  rate,
+  eps = 1e-08,
+  ufactor = 1.01,
+  lower = TRUE,
+  log = FALSE
+)
 
 C_cf1sample(n, alpha, rate)
 
@@ -24,11 +31,17 @@ C_cf1reform(alpha, rate)
 
 C_cf1sojourn(alpha, rate, f, b, t, eps = 1e-08, ufactor = 1.01)
 
-dcf1(x, alpha = 1, rate = 1, log = FALSE, eps = 1e-08,
-  unif.factor = 1.01)
+dcf1(x, alpha = 1, rate = 1, log = FALSE, eps = 1e-08, unif.factor = 1.01)
 
-pcf1(q, alpha = 1, rate = 1, lower.tail = TRUE, log.p = FALSE,
-  eps = 1e-08, unif.factor = 1.01)
+pcf1(
+  q,
+  alpha = 1,
+  rate = 1,
+  lower.tail = TRUE,
+  log.p = FALSE,
+  eps = 1e-08,
+  unif.factor = 1.01
+)
 
 qcf1(p, alpha = 1, rate = 1, lower.tail = TRUE, log.p = FALSE)
 
@@ -37,9 +50,10 @@ rcf1(n, alpha = 1, rate = 1, scramble = TRUE)
 \arguments{
 \item{dx}{A numeric value of time differences}
 
-\item{alpha}{A vector of initial probabilities}
+\item{alpha}{A numeric vector for initial probabilities.}
 
-\item{rate}{A vector of transition rates}
+\item{rate}{A numeric vector for transition rates to the next stage
+(diagonal entries of infinitesimal generator matrix).}
 
 \item{eps}{A value of tolerance error}
 
@@ -52,11 +66,6 @@ rcf1(n, alpha = 1, rate = 1, scramble = TRUE)
 \item{lower.tail}{A logical; if TRUE, the probability is P[X <= x], otherwise, P[X > x].}
 
 \item{p}{A numeric vector of probabilities.}
-
-\item{alpha}{A numeric vector for initial probabilities.}
-
-\item{rate}{A numeric vector for transition rates to the next stage
-(diagonal entries of infinitesimal generator matrix).}
 }
 \value{
 'dcf1' gives the desity, 'pcf1' gives the distribution, and

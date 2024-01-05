@@ -4,8 +4,14 @@
 \alias{cf1.params.init}
 \title{Simple parameter estimation for PH}
 \usage{
-cf1.params.init(n, data, shape.init = c(1, 4, 16, 64, 256, 1024),
-  scale.init = c(0.5, 1, 2), maxiter.init = 5, verbose = FALSE)
+cf1.params.init(
+  n,
+  data,
+  shape.init = c(1, 4, 16, 64, 256, 1024),
+  scale.init = c(0.5, 1, 2),
+  maxiter.init = 5,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{n}{An integer for the number of phases}

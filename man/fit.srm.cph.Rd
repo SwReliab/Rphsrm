@@ -4,9 +4,17 @@
 \alias{fit.srm.cph}
 \title{NHPP-based software reliability model}
 \usage{
-fit.srm.cph(time = NULL, fault = NULL, type = NULL, te = NULL,
-  data = data.frame(), phase = 2:10, selection = "AIC",
-  control = list(), ...)
+fit.srm.cph(
+  time = NULL,
+  fault = NULL,
+  type = NULL,
+  te = NULL,
+  data = data.frame(),
+  phase = 2:10,
+  selection = "AIC",
+  control = list(),
+  ...
+)
 }
 \arguments{
 \item{time}{A numeric vector for time intervals.}

@@ -1,3 +1,7 @@
+# Rphsrm 0.1.7
+
+* Add get_params to get a flatten parameter vector
+
 # Rphsrm 0.1.6
 
 * Change the basement version of Rsrat
