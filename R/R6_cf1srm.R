@@ -82,9 +82,11 @@ CPHSRM <- R6::R6Class("CPHSRM",
     },
     #' @description 
     #' Set omega parameter.
+    #' @param params Parameters.
     #' @param x A value of omega.
-    set_omega = function(x) {
-      self$params$omega <- x
+    set_omega = function(params, x) {
+      params$omega <- x
+      params
     },
     #' @description 
     #' Execute an EM step.
